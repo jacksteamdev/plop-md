@@ -20,7 +20,7 @@
   "types": "./types/index.d.ts",
   "scripts": {
     "test": "jest",
-    "preversion": "tsc"
+    "preversion": "tsc -p tsconfig.build.json"
   },
   "dependencies": {
     "@types/unist": "^2.0.3",
