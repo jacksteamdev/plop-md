@@ -1,7 +1,7 @@
 import { Project } from 'ts-morph'
 
 const project = new Project({
-  tsConfigFilePath: require.resolve('../tsconfig.json'),
+  tsConfigFilePath: require.resolve('../../../tsconfig.json'),
   addFilesFromTsConfig: false,
 })
 
