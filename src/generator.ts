@@ -107,13 +107,15 @@ function handleElementsMD(elements: MD) {
         // data: section.data()
       }
 
-      let actions = generator.actions
+      const actions = generator.actions
       if (typeof actions === 'function') {
-        actions = actions(data)
-      }
+        md.actions.push(async () => {
+          const result = await (actions as Function)(data)
 
-      if (actions instanceof Promise) {
-        md.actions.push(actions.then(addActions))
+          addActions(result)
+
+          return result
+        })
       } else {
         addActions(actions)
       }
@@ -125,12 +127,24 @@ function handleElementsMD(elements: MD) {
           ...actions.map(
             // Add data property to each action
             (action: any) => {
-              const result = {
-                ...action,
-                data: mergeData(action.data, data),
-              } as any
+              if (typeof action === 'function') {
+                return async (_data: any, options: any, plop: NodePlopAPI) => {
+                  const result = await action(
+                    mergeData(_data, data),
+                    options,
+                    plop,
+                  )
 
-              return result
+                  return result
+                }
+              } else {
+                const result = {
+                  ...action,
+                  data: mergeData(action.data, data),
+                } as any
+
+                return result
+              }
             },
           ),
         )
