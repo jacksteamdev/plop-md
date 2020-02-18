@@ -10,7 +10,7 @@ export function lastType(
     .values()
     .join('\n\n')
 
-  const type = getExportedTypes(code).pop()
+  const [type] = getExportedTypes(code).pop() || []
 
   if (type) {
     return options.fn({ type })
