@@ -36,5 +36,7 @@ export function getExportedTypes(src: string): [string, string][] {
       { pos: 0, types: [] as ReturnType<typeof getExportedTypes> },
     )
 
+  project.removeSourceFile(sourceFile)
+
   return types
 }
