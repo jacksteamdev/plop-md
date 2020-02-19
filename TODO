@@ -1,0 +1,18 @@
+
+PlopMD:
+  Stage 1:
+    ✔ Get content as code and text item array @started(20-02-14 08:08) @done(20-02-14 11:05) @lasted(2h57m2s)
+    ✔ Publish PlopMD as `@bumble/plop-md` @done(20-02-18 16:06)
+  Stage 2:
+    ✘ Get content before sub sections @cancelled(20-02-18 16:06)
+    ☐ Parse JSON/YAML blocks using YAML parser
+    ☐ Combine plop blocks using `Object.assign`
+
+Generators:
+  Stage 1:
+    ✔ Factor out storage and messages generators @started(20-02-14 09:21) @done(20-02-14 11:04) @lasted(1h43m57s)
+    ✔ `pages` generator should check for `components` generator in elements, and use React or not accordingly @done(20-02-18 16:07)
+
+Helpers:
+  Stage 2:
+    ✔ Convert `eachType` to use the TypeScript AST @done(20-02-18 16:07)
