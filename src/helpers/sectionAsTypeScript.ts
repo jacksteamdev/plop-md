@@ -7,9 +7,10 @@ import { multiLineComment } from './multiLineComment'
  * in order to a single string
  */
 export function sectionAsTypeScript(this: PlopMdData): string {
-  return this.md
-    .content()
-    .children.reduce(
+  const content = this.md.content()
+  const nodes = content.children.length ? content.children : [content.node]
+
+  return nodes.reduce(
       (r, node) => {
         const { type, content } = r.pop()!
 
