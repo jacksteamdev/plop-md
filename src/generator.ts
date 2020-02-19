@@ -13,8 +13,8 @@ import {
 import { MD } from './parser'
 import { PlopMdData, PlopMdGenerator } from './types'
 
-const success = 'loaded elements and tests'
-const failure = 'unable to load elements and tests'
+const success = 'Loaded ELEMENTS.md'
+const failure = 'Could not load ELEMENTS.md'
 
 const packageJson = importCwd('./package.json') as {
   name: string
@@ -74,7 +74,7 @@ function createElementsMD(generators: string[]) {
     data: { generators, packageJson },
   } as AddActionConfig)
 
-  return 'creating ELEMENTS.md...'
+  return 'Creating ELEMENTS.md'
 }
 
 function handleElementsMD(elements: MD) {
@@ -82,6 +82,7 @@ function handleElementsMD(elements: MD) {
     const title = startCase(key)
     const subSections = elements.subSections(title)
 
+    
     if (subSections.length) {
       // For sub sections like units
       subSections.forEach(handleSection)
@@ -89,35 +90,43 @@ function handleElementsMD(elements: MD) {
       // For sections without sub sections
       handleSection(elements.section(title))
     }
-
+    
     function handleSection(section: MD) {
       if (section.isEmpty) return
-
+      
       const filename = section.heading()
 
+      
       const sections = elements
-        .eachMatch({ type: 'heading', depth: 2 })
+      .eachMatch({ type: 'heading', depth: 2 })
         .values()
 
-      const data: PlopMdData = {
+        const data: PlopMdData = {
         md: section,
         filename,
         sections,
         // TODO: Get data from json/yaml code blocks
         // data: section.data()
       }
-
+      
       const actions = generator.actions
       if (typeof actions === 'function') {
+        // No longer a DynamicActionsFunction, just a CustomActionFunction
         md.actions.push(async () => {
           const result = await (actions as Function)(data)
-
+          
           addActions(result)
-
-          return result
+          
+          return announceSection()
         })
       } else {
+        md.actions.push(announceSection)
+
         addActions(actions)
+      }
+
+      function announceSection() {
+        return `Starting ${key} actions for ${filename}`
       }
 
       function addActions(
