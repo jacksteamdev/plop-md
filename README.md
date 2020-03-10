@@ -67,3 +67,13 @@ A PlopMD elements file looks something like this:
 
 <!-- Add comments and code blocks for this file here. -->
 ```
+
+### Plopfile Usage
+
+```javascript
+// plopfile.js
+
+module.exports = (plop) => {
+  plop.load('plop-md/load.js')
+}
+```
