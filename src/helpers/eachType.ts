@@ -5,7 +5,7 @@ export function eachType(
   this: PlopMdData,
   options: Handlebars.HelperOptions,
 ): string {
-  const code = this.md
+  const code = this.section
     .code('typescript', 'ts')
     .values()
     .join('\n\n')

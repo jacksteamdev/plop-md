@@ -5,7 +5,7 @@ export function eachListItem(
   this: PlopMdData,
   options: Handlebars.HelperOptions,
 ) {
-  const lists = this.md.eachMatch({ type: 'list' })
+  const lists = this.section.eachMatch({ type: 'list' })
 
   const listItems = MD.create(lists.children).children.map((li) =>
     MD.values(li).join(' '),
