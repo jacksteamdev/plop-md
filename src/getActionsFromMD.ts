@@ -9,40 +9,42 @@ export function getActionsFromMD(
 ): ActionType<PlopMdData>[] {
   return (
     generators
-      .flatMap(matchGeneratorsToActions)
-      // Remove undefined sections
+      .flatMap(matchGeneratorsToSections)
+      // Remove unused generators
       .filter((x) => x)
   )
 
-  function matchGeneratorsToActions({ name, actions }: FullPlopGenerator) {
+  function matchGeneratorsToSections({ name, actions }: FullPlopGenerator) {
+    // Generator name
     const title = startCase(name)
-    const subSections = elements.subSections(title)
+    // Files under generator name
+    const fileSections = elements.subSections(title)
 
-    if (subSections.length) {
-      // For sub sections like units
-      return subSections.map(handleSection)
+    if (fileSections.length) {
+      // For each named file
+      return fileSections.map(handleFile)
     } else {
-      // For sections without sub sections
-      return handleSection(elements.section(title))
+      // No files under generator
+      // Only one file named for the generator
+      return handleFile(elements.section(title))
     }
 
-    function handleSection(section: MD) {
+    function handleFile(fileSection: MD) {
+      // Handle dynamic action function
       if (typeof actions === 'function') {
         throw new TypeError(
           '[plop-md] Dynamic action functions are not supported',
         )
       }
-      if (section.isEmpty) return
 
-      const filename = section.heading()
-      const sections = elements
-        .eachMatch({ type: 'heading', depth: 2 })
-        .values()
+      // File section is empty
+      if (fileSection.isEmpty) return
 
-      const data: Pick<PlopMdData, 'section' | 'filename' | 'sections'> = {
-        section,
+      const filename = fileSection.heading()
+
+      const data: Pick<PlopMdData, 'section' | 'filename'> = {
+        section: fileSection,
         filename,
-        sections,
       }
 
       return actions.map(addDataToAction(data))
