@@ -20,8 +20,10 @@
   "main": "./dist/index.js",
   "types": "./types/index.d.ts",
   "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "build:watch": "tsc -p tsconfig.build.json -w",
     "test": "jest",
-    "preversion": "tsc -p tsconfig.build.json"
+    "preversion": "npm run build"
   },
   "dependencies": {
     "@types/unist": "^2.0.3",
