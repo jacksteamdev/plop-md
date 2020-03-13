@@ -50,6 +50,7 @@ export const md: PlopMdGenerator = (plop) => {
               ...plop.getGenerator(name),
             }),
           ),
+          { md },
         )
       } else {
         return createElementsMD(generators)

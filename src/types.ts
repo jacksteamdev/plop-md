@@ -11,8 +11,6 @@ export interface PlopMdData {
   filename: string
   /** Section as MD instance */
   section: MD
-  /** Does this project use React? */
-  sections: string[]
 }
 
 export type PlopMdGenerator = (plop: NodePlopAPI) => PlopGenerator

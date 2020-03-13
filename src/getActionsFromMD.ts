@@ -6,6 +6,7 @@ import { FullPlopGenerator, PlopMdData } from './types'
 export function getActionsFromMD(
   elements: MD,
   generators: FullPlopGenerator[],
+  data: any,
 ): ActionType<PlopMdData>[] {
   return (
     generators
@@ -22,7 +23,7 @@ export function getActionsFromMD(
 
     if (fileSections.length) {
       // For each named file
-      return fileSections.map(handleFile)
+      return fileSections.flatMap(handleFile)
     } else {
       // No files under generator
       // Only one file named for the generator
@@ -30,24 +31,23 @@ export function getActionsFromMD(
     }
 
     function handleFile(fileSection: MD) {
-      // Handle dynamic action function
-      if (typeof actions === 'function') {
-        throw new TypeError(
-          '[plop-md] Dynamic action functions are not supported',
-        )
-      }
-
       // File section is empty
       if (fileSection.isEmpty) return
 
       const filename = fileSection.heading()
 
-      const data: Pick<PlopMdData, 'section' | 'filename'> = {
+      const _data: Pick<PlopMdData, 'section' | 'filename'> = {
         section: fileSection,
         filename,
       }
 
-      return actions.map(addDataToAction(data))
+      // Handle dynamic action function
+      if (typeof actions === 'function') {
+        const result = actions({ ...data, ..._data })
+        return result.map(addDataToAction(_data))
+      } else {
+        return actions.map(addDataToAction(_data))
+      }
     }
   }
 }
