@@ -58,7 +58,6 @@ const jest = {
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     // 'plugin:jest/recommended', // requires no use of power-assert
     // 'plugin:jest/all', // adds style rules
-    'plugin:react/recommended',
   ],
   rules: {
     ...rules,
@@ -96,7 +95,6 @@ const ts = {
     ...rules,
     'no-restricted-globals': [1, 'jest', 'it', 'test', 'expect', 'describe'],
   },
-  // This order is important: react, then jest
   // File matching patterns should go from general to specific
   overrides: [jest],
 }
