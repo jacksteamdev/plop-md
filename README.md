@@ -77,3 +77,16 @@ module.exports = (plop) => {
   plop.load('plop-md/load.js')
 }
 ```
+
+### Data provided
+
+```typescript
+interface PlopMdData {
+  /** Full ELEMENTS.md as MD instance */
+  md: MD
+  /** Name of file, or H3 */
+  filename: string
+  /** Section as MD instance */
+  section: MD
+}
+```
